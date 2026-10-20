@@ -26,11 +26,15 @@
             color: var(--text-color);
             line-height: 1.6;
             padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
         }
 
         .container {
-            max-width: 600px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 500px;
             background: #ffffff;
             padding: 30px;
             border-radius: 12px;
@@ -94,7 +98,7 @@
             background: #e8f8f5;
             border-left: 5px solid var(--accent-color);
             border-radius: 4px;
-            display: none; /* Disembunyikan dulu sebelum ada hasil */
+            display: none; /* Disembunyikan sebelum tombol diklik */
         }
 
         .result-box h3 {
@@ -149,27 +153,28 @@
 
     <!-- JavaScript Internal untuk Logika Bisnis & Interaksi -->
     <script>
-        // Mengambil elemen dari HTML
+        // Mengambil elemen dari HTML berdasarkan ID
         const calcBtn = document.getElementById('calcBtn');
         const weightInput = document.getElementById('weightInput');
         const ingredientSelect = document.getElementById('ingredient');
         const resultBox = document.getElementById('resultBox');
         const resultText = document.getElementById('resultText');
 
-        // Fungsi ketika tombol hitung diklik
+        // Fungsi yang berjalan ketika tombol hitung diklik
         calcBtn.addEventListener('click', function() {
             let weight = parseFloat(weightInput.value);
             let ingredient = ingredientSelect.value;
 
-            // Validasi input sederhana
+            // Validasi input agar tidak kosong atau bernilai minus
             if (isNaN(weight) || weight <= 0) {
                 alert("Mohon masukkan angka berat yang valid!");
                 return;
             }
 
-            let conversionRate = 15; // Standar umum: 1 sendok makan bahan sekitar 10-15 gram
+            let conversionRate = 10; 
             let ingredientName = "";
 
+            // Menentukan rasio konversi berdasarkan bahan
             if (ingredient === "tepung") {
                 conversionRate = 10; // 1 sdm tepung terigu ± 10 gram
                 ingredientName = "Tepung Terigu";
@@ -181,10 +186,10 @@
                 ingredientName = "Mentega/Margarin";
             }
 
-            // Hitung estimasi sendok makan
+            // Menghitung perkiraan jumlah sendok makan (dibulatkan 1 angka di belakang koma)
             let tablespoons = (weight / conversionRate).toFixed(1);
 
-            // Tampilkan hasil ke halaman web
+            // Menampilkan hasil ke layar
             resultText.innerHTML = `<b>${weight} gram</b> ${ingredientName} setara dengan sekitar <b>${tablespoons} Sendok Makan (SDM)</b> penuh.`;
             resultBox.style.display = "block";
         });
